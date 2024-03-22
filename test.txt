@@ -1,0 +1,87 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int n;
+int arr[2][30];
+int m=1,g=1;
+
+void input(){
+	cin>>n;
+	for(int i=0;i<2;i++){
+		for(int j=0;j<n;j++){
+			cin>>arr[i][j];
+		}
+	}
+
+
+}
+double getFLeft(double mdx){
+	double f=0;
+	for(int i=0;i<n;i++){
+		if(arr[0][i]<mdx){
+			double mi=arr[1][i];
+			double d=mdx-arr[0][i];
+			d >= 0 ? d : d*(-1);
+			f+= (m*mi)/(d*d);
+
+		}
+	}
+	return f;
+}
+
+double getFRight(double mdx){
+	double f=0;
+	for(int i=0;i<n;i++){
+		if(arr[0][i]>=mdx ){
+			double mi=arr[1][i];
+			double d=mdx-arr[0][i];
+			d >= 0 ? d : d*(-1);
+			f+= (m*mi)/(d*d);
+
+		}
+	}
+	return f;
+}
+
+double preLx=0;
+double preRx=0;
+
+void run(double lx,double rx,double mid){
+	double fl=getFLeft(mid);
+	double fr=getFRight(mid);
+
+	if(preLx== lx && preRx==rx){
+		cout<<fixed<<setprecision(10)<<mid<<endl;
+		return;
+	}
+	preLx= lx;
+	preRx=rx;
+	if(fl==fr || lx==rx) {
+		cout<<fixed<<setprecision(10)<<mid<<endl;
+		return;
+	}
+	if(fl<fr){
+		run(lx,mid,(mid+lx)/2);
+		
+	}
+	else if(fl>fr){
+		run(mid,rx,(mid+rx)/2);
+	}
+}
+
+int main(){
+	freopen("2203-001.txt","r",stdin);
+
+	for(int tc=1;tc<=2;tc++){
+		preLx=0;
+		preRx=0;
+
+		input();
+
+		double mid =(double) (arr[0][n-1]+arr[0][0])/2;
+		run(arr[0][0],arr[0][n-1],mid);
+		
+	}
+	return 0;
+}
